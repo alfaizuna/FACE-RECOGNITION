@@ -15,10 +15,11 @@ imgModeList = []
 for path in modePathList:
     imgModeList.append(cv2.imread(os.path.join(folderModePath, path)))
 
-while cap.isOpened():
+while True:
     success, img = cap.read()
 
     imgBackground[162:162 + 480, 55:55 + 640] = img
+    imgBackground[44:44 + 633, 808:808 + 414] = imgModeList[0]
 
     # cv2.imshow('Webcam', img)
     cv2.imshow('Face Attendance', imgBackground)
