@@ -16,10 +16,10 @@ for path in pathList:
     imgList.append(cv2.imread(os.path.join(folderPath, path)))
     studentIds.append(os.path.splitext(path)[0])
 
-    fileName = f'{folderPath}/{path}'
-    bucket = storage.bucket()
-    blob = bucket.blob(fileName)
-    blob.upload_from_filename(fileName)
+    # fileName = f'{folderPath}/{path}'
+    # bucket = storage.bucket()
+    # blob = bucket.blob(fileName)
+    # blob.upload_from_filename(fileName)
 
 
     # print(path)

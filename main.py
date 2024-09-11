@@ -1,6 +1,9 @@
 import os
-
+import numpy as np
 import cv2
+import face_recognition
+
+from EncodeGenerator import encodeListKnown, studentIds
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -18,8 +21,29 @@ for path in modePathList:
 while True:
     success, img = cap.read()
 
+    imgSmall = cv2.resize(img, (0, 0), None, 0.25, 0.25)
+    imgSmall = cv2.cvtColor(imgSmall, cv2.COLOR_BGR2RGB)
+
+    faceCurFrame = face_recognition.face_locations(imgSmall)
+    encodeCurFrame = face_recognition.face_encodings(imgSmall, faceCurFrame)
+
     imgBackground[162:162 + 480, 55:55 + 640] = img
     imgBackground[44:44 + 633, 808:808 + 414] = imgModeList[0]
+
+    for encodeFace, faceLoc in zip(encodeCurFrame, faceCurFrame):
+        matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
+        faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
+        # print("matches", matches)
+        # print("faceDis", faceDis)
+
+        matchIndex = np.argmin(faceDis)
+        # print("Match Index", matchIndex)
+
+        if matches[matchIndex]:
+            print("Found Face")
+            print(studentIds[matchIndex])
+
+
 
     # cv2.imshow('Webcam', img)
     cv2.imshow('Face Attendance', imgBackground)
